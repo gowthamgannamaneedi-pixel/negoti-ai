@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── CONFIG ───────────────────────────────────────────────────
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const MODELS = { flash: "gemini-1.5-flash", pro: "gemini-1.5-pro" };
+const MODELS = { flash: "gemini-2.5-flash", pro: "gemini-2.5-flash" };
 const VALID_USER = { id: "test_01", pass: "test@1234", name: "Arjun Kapoor", role: "Senior Sales Executive" };
 
 // ─── CASCADEFLOW ──────────────────────────────────────────────
@@ -28,6 +28,7 @@ function detectTask(msg) {
 
 // ─── GEMINI API ───────────────────────────────────────────────
 async function callGemini({ model, systemPrompt, history, userMessage, onChunk }) {
+  console.log("Model:", model);
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
   const contents = [
     ...(history || []).map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
